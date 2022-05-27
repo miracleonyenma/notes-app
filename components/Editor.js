@@ -102,7 +102,7 @@ const Editor = () => {
           setNotes({ note: updatedNote, type: "edit" });
 
           // force list to rerender
-          let lastItem = notes[notes.length - 1];
+          let lastItem = notes[0];
           if (lastItem.id == note.id) lastItem = updatedNote;
           // console.log({ userID, lastItem, note, updatedNote });
           setNotes({ note: lastItem, type: "remove" });
@@ -162,7 +162,6 @@ const Editor = () => {
   useEffect(() => {
     if (title && body) setIsSaved(false);
     else setIsSaved(true);
-
   }, [title, body]);
 
   // update the editor content whenever the note context changes
