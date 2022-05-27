@@ -5,8 +5,8 @@ const DropDown = ({ header, list }) => {
 
       <ul className="dropdown-list opacity-0 invisible">
         {list.length > 0 &&
-          list.map((item) => {
-            return <li className="dropdown-item">{item}</li>;
+          list.map((item, i) => {
+            return <li key={i} className="dropdown-item">{item}</li>;
           })}
       </ul>
     </div>
