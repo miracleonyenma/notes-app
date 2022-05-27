@@ -21,7 +21,7 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 
   const notes = await getAllNotesByUserID(session?.user?.id);
-  console.log({notes});
+  // console.log({notes});
 
   return {
     props: { notes },
@@ -34,7 +34,7 @@ const Home = ({ notes }) => {
   return (
     <>
       <Head>
-        <title>Notes app</title>
+        <title>Nottes app</title>
         <meta name="description" content="Notes app built with Next.js, Prisma & MongoDB" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

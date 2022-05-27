@@ -41,6 +41,7 @@ model Note {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   title String
   body  String
+  isPublic Boolean @default(false)
 
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)

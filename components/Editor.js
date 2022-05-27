@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 
 import { useSession } from "next-auth/react";
 
-import { CheckCircleIcon } from "@heroicons/react/solid";
+import { CheckCircleIcon, DotsHorizontalIcon, EyeIcon, EyeOffIcon, XCircleIcon } from "@heroicons/react/solid";
 
 import { useNote, useDispatchNote, useNotes, useDispatchNotes } from "../modules/AppContext";
 
 import RandomID from "../modules/RandomID";
+import DropDown from "./DropDown";
 
 const Editor = () => {
   // useSession() returns an object containing two values: data and status
@@ -21,14 +22,12 @@ const Editor = () => {
   const setNotes = useDispatchNotes();
 
   // editor note states
-  const [title, setTitle] = useState("Hola");
-  const [body, setBody] = useState(
-    `There once was a ship that put to sea
-and the name of the ship was the billy old tea`
-  );
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState(``);
   const [noteID, setNoteID] = useState(null);
   const [noteAction, setNoteAction] = useState("add");
   const [isSaved, setIsSaved] = useState(false);
+  const [isPublic, setIsPublic] = useState(false);
 
   // user data
   const [userID, setUserID] = useState(null);
@@ -76,14 +75,17 @@ and the name of the ship was the billy old tea`
         title,
         body,
         userId: userID,
+        isPublic,
       };
 
-      console.log({ note });
+      // console.log({ note });
 
       try {
         if (noteAction == "edit") {
           // add note id to note data
           note.id = noteID;
+
+          // console.log({ note, isPublic });
 
           // send request to edit note
           let res = await fetch("/api/note", {
@@ -94,11 +96,19 @@ and the name of the ship was the billy old tea`
 
           // update note
           const updatedNote = await res.json();
-          console.log("Update successful", { updatedNote });
+          // console.log("Update successful", { updatedNote });
 
           // edit in notes list
           setNotes({ note: updatedNote, type: "edit" });
-          console.log({ note, noteAction, noteID, notes });
+
+          // force list to rerender
+          let lastItem = notes[notes.length - 1];
+          if (lastItem.id == note.id) lastItem = updatedNote;
+          // console.log({ userID, lastItem, note, updatedNote });
+          setNotes({ note: lastItem, type: "remove" });
+          setNotes({ note: lastItem, type: "add" });
+
+          // console.log({ note, noteAction, noteID, notes });
         } else {
           // send create request with note data
           let res = await fetch("/api/note", {
@@ -108,7 +118,7 @@ and the name of the ship was the billy old tea`
           });
 
           const newNote = await res.json();
-          console.log("Create successful", { newNote });
+          // console.log("Create successful", { newNote });
           // add to notes list
           setNotes({ note: newNote, type: "add" });
         }
@@ -130,9 +140,17 @@ and the name of the ship was the billy old tea`
         setNoteID(null);
         setNoteAction("add");
       } catch (error) {
-        console.log(error);
+        console.warn(error);
       }
     }
+  };
+
+  const cancelAction = () => {
+    setNoteAction("add");
+  };
+
+  const togglePrivacy = () => {
+    setIsPublic(!isPublic);
   };
 
   // enable the button whenever the content of title & body changes
@@ -150,6 +168,7 @@ and the name of the ship was the billy old tea`
       setBody(currentNote.body);
       setNoteID(currentNote.id);
       setNoteAction(currentNote.action);
+      setIsPublic(currentNote.isPublic);
     }
   }, [currentNote]);
 
@@ -175,12 +194,39 @@ and the name of the ship was the billy old tea`
             </div>
           </div>
           <ul className={"options"}>
+            <li className="option">{/* <DropDown header={<DotsHorizontalIcon className="icon" />} /> */}</li>
             <li className={"option"}>
               <button onClick={saveNote} disabled={isSaved} className="cta flex gap-2 items-end">
-                <CheckCircleIcon className="h-5 w-5 text-blue-500" />
-                <span className="">{isSaved ? "Saved" : "Save"}</span>
+                <CheckCircleIcon className="icon" />
+                <span className="">{isSaved ? "Saved" : noteAction == "add" ? "Save" : "Update"}</span>
               </button>
             </li>
+            {noteAction == "edit" && (
+              <>
+                <li className={"option"}>
+                  <button onClick={cancelAction} disabled={isSaved} className="cta flex gap-2 items-end">
+                    <XCircleIcon className="icon" />
+                    <span className="">{"Cancel"}</span>
+                  </button>
+                </li>
+
+                <li className={"option"}>
+                  <button onClick={togglePrivacy} className="cta flex gap-2 items-end">
+                    {isPublic ? (
+                      <>
+                        <EyeIcon className="icon" />
+                        <span className="">Public </span>
+                      </>
+                    ) : (
+                      <>
+                        <EyeOffIcon className="icon" />
+                        <span className="">Private</span>
+                      </>
+                    )}
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

@@ -22,12 +22,12 @@ export default async function handle(req, res) {
 
   // Run if the request is a PUT request
   else if (req.method == "PUT") {
-    const { id, title, body } = req.body;
-    console.log({ id, title, body });
+    const { id, title, body, isPublic } = req.body;
+    console.log({ id, title, body, isPublic });
     // const updatedData = {title, body}
     // Update current note
     // also pass the session which would be use to get the user information
-    const note = await updateNote(id, { title, body }, session);
+    const note = await updateNote(id, { title, body, isPublic }, session);
 
     // return updated note
     return res.json(note);

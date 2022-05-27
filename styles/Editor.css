@@ -2,7 +2,7 @@
   @apply my-16 min-h-[20] border border-gray-200 max-w-3xl m-auto rounded-xl shadow-lg;
 }
 
-.wrapper{
+.editor .wrapper{
   @apply p-4;
 }
 

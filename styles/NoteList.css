@@ -3,7 +3,7 @@
 }
 
 .note-list {
-  @apply grid md:grid-cols-3 2xl:grid-cols-4 gap-4;
+  @apply grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4;
 }
 
 .note-list .note-item {
@@ -15,21 +15,39 @@
 }
 
 .note .note-header {
-  @apply px-4;
+  /* @apply px-4; */
 }
 
-.note main {
-  @apply grow;
+.note .note-title {
+  @apply text-2xl
 }
+
 
 .note .note-footer {
   @apply border-t border-gray-200 pt-4 mt-2;
 }
 
+.note.preview {
+  /* @apply text-2xl; */
+}
+
+.note.preview .note-title {
+  @apply  !text-4xl;
+}
+
+.note .note-main {
+  @apply grow;
+}
+
+.note.preview .note-body {
+  @apply text-2xl;
+}
+
+
 .options {
-  @apply  flex gap-2 flex-wrap;
+  @apply flex gap-2 flex-wrap;
 }
 
 .fallback-message {
-  @apply  flex items-center justify-center w-full h-full min-h-[calc(100vh-20rem)];
+  @apply flex items-center justify-center w-full h-full min-h-[calc(100vh-20rem)];
 }

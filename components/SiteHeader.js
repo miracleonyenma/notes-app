@@ -7,7 +7,7 @@ const SiteHeader = () => {
     <header className={"site-header"}>
       <div className="wrapper">
         <figure className="logo">
-          <Link href={`/`} passHref={true}>📝 Notes</Link>
+          <Link href={`/`} passHref={true}>📝 Nottes</Link>
         </figure>
 
         <AuthBtn />

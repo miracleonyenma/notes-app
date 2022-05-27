@@ -1,5 +1,5 @@
 .site-header {
-  @apply sticky top-6 w-full px-6 mb-6 z-10;
+  @apply sticky top-6 w-full px-2 mb-6 z-10;
 }
 
 .site-header .wrapper {

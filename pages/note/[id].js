@@ -1,32 +1,65 @@
 import Head from "next/head";
 import Image from "next/image";
 
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 
 const getNoteByID = require("../../prisma/Note").getNoteByID;
+
+import Note from "../../components/Note";
 
 import HomeStyles from "../../styles/Home.module.css";
 
 export const getServerSideProps = async ({ req, res, params }) => {
   const session = await getSession({ req });
-  console.log({ params });
+  let dummyNote = {
+    id: "fakeID",
+    title: "404",
+    body: `Yup. It is what it is.
+      Seems like we had some issues getting that particular note.
+      `,
+    isPublic: true,
+    userId: "fakeID",
+    user: {
+      id: "fakeID",
+      name: "404 guy",
+      email: "404guy@nottes.app",
+      emailVerified: null,
+      image: "/img/panda.png",
+    },
+  };
+
+  // // console.log({ params, session });
   const { id } = params;
 
-  if (!session) {
-    res.statusCode = 403;
-    return { props: { note: null } };
+  try {
+    const note = await getNoteByID(id);
+    // // console.log({ note, isPublic: note.isPublic });
+
+    if (!session && !note.isPublic) {
+      res.statusCode = 403;
+      // console.log("Hide");
+      return { props: { note: null, session } };
+    }
+
+    return {
+      props: { note },
+    };
+  } catch (error) {
+    return {
+      props: {
+        note: dummyNote,
+      },
+    };
   }
-
-  const note = await getNoteByID(id);
-  console.log({ note });
-
-  return {
-    props: { note },
-  };
 };
 
-const Note = ({ note }) => {
-  if (note == null) {
+const PreviewNote = ({ note }) => {
+  const { data: session, status } = useSession();
+
+  // console.log({ note, session, status });
+
+  if (!session && !note.isPublic) {
+    // console.log("This ran??????", note.isPublic);
     return (
       <>
         <Head>
@@ -38,7 +71,7 @@ const Note = ({ note }) => {
         <div className={HomeStyles.container}>
           <main className={HomeStyles.main}>
             <header className="max-w-4xl mt-24 mx-auto">
-              <h1 className="text-4xl">Oops... You have to login to view this note</h1>
+              <h1 className="text-4xl">{status == "loading" ? "Preparing your note..." : "Oops... You have to login to view this note"}</h1>
             </header>
           </main>
         </div>
@@ -49,33 +82,20 @@ const Note = ({ note }) => {
   return (
     <>
       <Head>
-        <title>{note.title}</title>
-        <meta name="description" content={`By ${note.user.name}`} />
+        <title>{note?.title}</title>
+        <meta name="description" content={`By ${note?.user.name}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div className={HomeStyles.container}>
         <main className={HomeStyles.main}>
-          <article className="note max-w-4xl m-auto mt-20">
-            <header className="note-header">
-              <h2 className="text-4xl">{note.title}</h2>
-            </header>
-            <main className=" px-4">
-              <p className="text-xl">{note.body}</p>
-            </main>
-            <footer className="note-footer">
-              <ul className="options px-4">
-                <li className="option">
-                  {/* add user image to note footer */}
-                  <Image src={note.user.image} alt={note.user.name} width={48} height={48} className="rounded-full" />
-                </li>
-              </ul>
-            </footer>
-          </article>
+          <div className="wrapper max-w-3xl mt-32 m-auto">
+            <Note note={note} isPreview={true} />
+          </div>
         </main>
       </div>
     </>
   );
 };
 
-export default Note;
+export default PreviewNote;

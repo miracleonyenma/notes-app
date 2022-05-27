@@ -59,6 +59,8 @@ export const getAllNotesByUserID = async (id) => {
 // UPDATE
 export const updateNote = async (id, updatedData, session) => {
   let userId = session?.user.id;
+
+  console.log({ updatedData });
   const updatedNote = await prisma.note.update({
     where: {
       id_userId: {
@@ -79,6 +81,8 @@ export const updateNote = async (id, updatedData, session) => {
 // DELETE
 export const deleteNote = async (id, session) => {
   let userId = session?.user.id;
+
+  console.log({ id, userId });
 
   const deletedNote = await prisma.note.delete({
     where: {
