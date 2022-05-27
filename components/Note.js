@@ -50,7 +50,9 @@ const Note = ({ note, isPreview }) => {
     <article className={`note ${isPreview ? "preview" : ""}`}>
       <header className="note-header flex gap-4 justify-between">
         <h2 className="note-title">{note.title}</h2>
-        <span className="" title="This note is public" >{note.isPublic && <EyeIcon className="icon" />}</span>
+        <span className="" title="This note is public">
+          {note.isPublic && <EyeIcon className="icon" />}
+        </span>
       </header>
       <main className="note-main">
         <p className="note-body">{note.body}</p>
@@ -65,10 +67,12 @@ const Note = ({ note, isPreview }) => {
             {!isPreview && (
               <li className="option">
                 <Link href={`/note/${note.id}`} target={`_blank`} rel={`noopener`}>
-                  <button className="cta cta-w-icon">
-                    <ExternalLinkIcon className="icon" />
-                    <span className="">Open</span>
-                  </button>
+                  <a target="_blank" rel="noopener noreferrer">
+                    <button className="cta cta-w-icon">
+                      <ExternalLinkIcon className="icon" />
+                      <span className="">Open</span>
+                    </button>
+                  </a>
                 </Link>
               </li>
             )}
