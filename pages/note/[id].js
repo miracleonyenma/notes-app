@@ -30,54 +30,31 @@ export const getServerSideProps = async ({ req, res, params }) => {
 
   // // console.log({ params, session });
   const { id } = params;
+  let note;
 
   try {
-    const note = await getNoteByID(id);
-    // // console.log({ note, isPublic: note.isPublic });
-
-    if (!session && !note.isPublic) {
-      res.statusCode = 403;
-      // console.log("Hide");
-      return { props: { note: null, session } };
-    }
-
-    return {
-      props: { note },
-    };
+    note = await getNoteByID(id);
   } catch (error) {
+    note = dummyNote;
+  }
+  if (session?.user?.id == note?.userId || note?.isPublic) {
+    return {
+      props: {
+        note,
+      },
+    };
+  } else
     return {
       props: {
         note: dummyNote,
       },
     };
-  }
 };
 
 const PreviewNote = ({ note }) => {
   const { data: session, status } = useSession();
 
-  // console.log({ note, session, status });
-
-  if (!session && !note.isPublic) {
-    // console.log("This ran??????", note.isPublic);
-    return (
-      <>
-        <Head>
-          <title>Login to view note</title>
-          <meta name="description" content="Login to view this note" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <div className={HomeStyles.container}>
-          <main className={HomeStyles.main}>
-            <header className="max-w-4xl mt-24 mx-auto">
-              <h1 className="text-4xl">{status == "loading" ? "Preparing your note..." : "Oops... You have to login to view this note"}</h1>
-            </header>
-          </main>
-        </div>
-      </>
-    );
-  }
+  console.log({ note, session, status });
 
   return (
     <>
