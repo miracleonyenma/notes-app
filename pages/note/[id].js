@@ -60,7 +60,15 @@ const PreviewNote = ({ note }) => {
     <>
       <Head>
         <title>{note?.title}</title>
-        <meta name="description" content={`By ${note?.user.name}`} />
+        <meta name="title" content={`${note?.title}`} key={`meta-title`} />
+        <meta name="description" content={`By ${note?.user.name}`} key={`meta-description`} />
+
+        <meta property="og:title" content={`${note?.title}`} key={`og-title`} />
+        <meta property="og:description" content={`By ${note?.user.name}`} key={`og-description`} />
+
+        <meta property="twitter:title" content={`${note?.title}`} key={`twitter-title`} />
+        <meta property="twitter:description" content={`By ${note?.user.name}`} key={`twitter-description`} />
+
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
