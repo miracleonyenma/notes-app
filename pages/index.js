@@ -33,12 +33,6 @@ const Home = ({ notes }) => {
 
   return (
     <>
-      <Head>
-        <title>Nottes app</title>
-        <meta name="description" content="Notes app built with Next.js, Prisma & MongoDB" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <div className={HomeStyles.container}>
         <main className={HomeStyles.main}>
           <div className="wrapper m-auto max-w-8xl">

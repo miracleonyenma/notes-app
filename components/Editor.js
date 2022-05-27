@@ -123,26 +123,31 @@ const Editor = () => {
           setNotes({ note: newNote, type: "add" });
         }
 
-        // change isSaved state to true, thereby disabling the save button
-        setIsSaved(true);
-
-        // clear note content
-        note = { title: "", body: "" };
-
-        // clear editor
-        setTitle(note.title);
-        setBody(note.body);
-
-        // clear current note state
-        setCurrentNote(note);
-
-        // clear note ID & action
-        setNoteID(null);
-        setNoteAction("add");
+        note = clearEditor();
       } catch (error) {
         console.warn(error);
       }
     }
+  };
+
+  const clearEditor = () => {
+    // change isSaved state to true, thereby disabling the save button
+    setIsSaved(true);
+
+    // clear note content
+    let note = { title: "", body: "" };
+
+    // clear editor
+    setTitle(note.title);
+    setBody(note.body);
+
+    // clear current note state
+    setCurrentNote(note);
+
+    // clear note ID & action
+    setNoteID(null);
+    setNoteAction("add");
+    return note;
   };
 
   const cancelAction = () => {
@@ -157,6 +162,7 @@ const Editor = () => {
   useEffect(() => {
     if (title && body) setIsSaved(false);
     else setIsSaved(true);
+
   }, [title, body]);
 
   // update the editor content whenever the note context changes
@@ -226,6 +232,13 @@ const Editor = () => {
                   </button>
                 </li>
               </>
+            )}
+            {!isSaved && (
+              <li className={"option"}>
+                <button onClick={clearEditor} className="cta flex gap-2 items-end">
+                  <XCircleIcon className="icon" />
+                </button>
+              </li>
             )}
           </ul>
         </div>

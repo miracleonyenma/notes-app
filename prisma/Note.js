@@ -1,6 +1,27 @@
 // ./prisma/Note.js
 import prisma from "./prisma";
 
+const serializeData = (notes) => {
+  for (const note of notes) {
+    note.createdAt = `${note.createdAt}`;
+    note.updatedAt = `${note.updatedAt}`;
+    // note.createdAt = note.createdAt.toString();
+    // note.updatedAt = note.updatedAt.toString();
+    console.log({ noteCreatedAt: note.createdAt });
+  }
+
+  console.log({ notes });
+
+  return notes;
+};
+
+const serializeDataItem = note => {
+  note.createdAt = note.createdAt.toString()
+  note.updatedAt = note.updatedAt.toString()
+
+  return note
+}
+
 // CREATE
 export const createNote = async (title, body, session) => {
   const newNote = await prisma.note.create({
@@ -19,7 +40,7 @@ export const createNote = async (title, body, session) => {
 // READ
 //get unique note by id
 export const getNoteByID = async (id) => {
-  const note = await prisma.note.findUnique({
+  let note = await prisma.note.findUnique({
     where: {
       id,
     },
@@ -28,30 +49,46 @@ export const getNoteByID = async (id) => {
     },
   });
 
+  note = serializeDataItem(note)
+
   return note;
 };
 
 // get all notes
 export const getAllNotes = async () => {
-  const notes = await prisma.note.findMany({
+  let notes = await prisma.note.findMany({
     include: {
       user: true,
     },
+    orderBy: [
+      {
+        updatedAt: "desc",
+      },
+    ],
   });
+
+  notes = serializeData(notes);
 
   return notes;
 };
 
 // get notes by user
 export const getAllNotesByUserID = async (id) => {
-  const notes = await prisma.note.findMany({
+  let notes = await prisma.note.findMany({
     where: {
       userId: id,
     },
     include: {
       user: true,
     },
+    orderBy: [
+      {
+        updatedAt: "desc",
+      },
+    ],
   });
+
+  notes = serializeData(notes);
 
   return notes;
 };
