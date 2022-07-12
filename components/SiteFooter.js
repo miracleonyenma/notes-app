@@ -30,7 +30,7 @@ const SiteFooter = ({}) => {
                 </a>
               </li>
               <li className="link">
-                <a href="https://https://github.com/miracleonyenma/notes-app" target="_blank" rel="noopener noreferrer" className="w-icon">
+                <a href="https://github.com/miracleonyenma/notes-app" target="_blank" rel="noopener noreferrer" className="w-icon">
                   <CodeIcon className="icon solid" />
                   <span>View on Github</span>
                 </a>
