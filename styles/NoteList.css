@@ -24,7 +24,7 @@
 }
 
 .note .note-title {
-  @apply text-2xl
+  @apply text-3xl
 }
 
 .note .note-main {
@@ -47,11 +47,11 @@
 } */
 
 .note.preview {
-  @apply border-transparent;
+  @apply gap-8 border-transparent;
 }
 
 .note.preview .note-title {
-  @apply  !text-4xl;
+  @apply  !text-6xl;
 }
 
 .note.preview .note-body {

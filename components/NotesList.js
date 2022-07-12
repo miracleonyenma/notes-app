@@ -21,8 +21,8 @@ const NotesList = ({ retrieved_notes, showEditor }) => {
   // }, [notes])
 
   return (
-    <div className="notes">
-      {notes.length > 0 ? (
+    <section className="notes">
+      {notes?.length > 0 ? (
         <ul className="note-list">
           {notes.map((note) => (
             <li key={note.id} className="note-item">
@@ -37,7 +37,7 @@ const NotesList = ({ retrieved_notes, showEditor }) => {
           <p>Oops.. no notes yet</p>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

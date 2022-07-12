@@ -1,5 +1,6 @@
 import SiteHeader from "../components/SiteHeader";
 import Head from "next/head";
+import SiteFooter from "../components/SiteFooter";
 
 const DefaultLayout = ({ children }) => {
   return (
@@ -28,6 +29,7 @@ const DefaultLayout = ({ children }) => {
 
       <SiteHeader />
       {children}
+      <SiteFooter />
     </>
   );
 };

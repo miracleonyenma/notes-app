@@ -1,6 +1,11 @@
 // ./prisma/Note.js
 import prisma from "./prisma";
 
+//
+// import { PrismaClient } from "@prisma/client";
+// let prisma = new PrismaClient();
+//
+
 const serializeData = (notes) => {
   for (const note of notes) {
     note.createdAt = `${note.createdAt}`;
@@ -15,12 +20,12 @@ const serializeData = (notes) => {
   return notes;
 };
 
-const serializeDataItem = note => {
-  note.createdAt = note.createdAt.toString()
-  note.updatedAt = note.updatedAt.toString()
+const serializeDataItem = (note) => {
+  note.createdAt = note.createdAt.toString();
+  note.updatedAt = note.updatedAt.toString();
 
-  return note
-}
+  return note;
+};
 
 // CREATE
 export const createNote = async (title, body, session) => {
@@ -49,7 +54,7 @@ export const getNoteByID = async (id) => {
     },
   });
 
-  note = serializeDataItem(note)
+  note = serializeDataItem(note);
 
   return note;
 };
@@ -70,6 +75,32 @@ export const getAllNotes = async () => {
   notes = serializeData(notes);
 
   return notes;
+};
+
+// get all public notes
+export const getAllPublicNotes = async () => {
+  try {
+    let notes = await prisma.note.findMany({
+      where: {
+        isPublic: true,
+      },
+      include: {
+        user: true,
+      },
+      orderBy: [
+        {
+          updatedAt: "desc",
+        },
+      ],
+    });
+
+    notes = serializeData(notes);
+
+    return notes;
+  } catch (error) {
+    console.log({ error });
+    return [];
+  }
 };
 
 // get notes by user

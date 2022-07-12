@@ -32,8 +32,8 @@ const Editor = () => {
   const notes = useNotes();
   const setNotes = useDispatchNotes();
 
-  const {isLoading} = useToast()
-  const setToast = useDispatchToast()
+  const { isLoading } = useToast();
+  const setToast = useDispatchToast();
 
   // editor note states
   const [title, setTitle] = useState("");
@@ -43,7 +43,7 @@ const Editor = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
 
-  const [editorIsActive, setEditorIsActive] = useState(false);
+  const [editorIsActive, setEditorIsActive] = useState(true);
 
   // user data
   const [userID, setUserID] = useState(null);
@@ -97,7 +97,7 @@ const Editor = () => {
       // console.log({ note });
 
       try {
-        setToast({isLoading: true})
+        setToast({ isLoading: true });
         if (noteAction == "edit") {
           // add note id to note data
           note.id = noteID;
@@ -144,7 +144,7 @@ const Editor = () => {
       } catch (error) {
         console.warn(error);
       }
-      setToast({isLoading: false})
+      setToast({ isLoading: false });
     }
   };
 
@@ -198,79 +198,81 @@ const Editor = () => {
 
   return (
     <>
-      {status === "authenticated" && (
-        <div className={`editor ${editorIsActive && "active"}`}>
-          <div className={"wrapper"}>
-            <div className="editing-area">
-              <div className="editor-header">
-                <div className="title">
-                  <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className={"form-input"} placeholder="Title" />
+        {status === "authenticated" && (
+          <div className={`editor ${editorIsActive && "active"}`}>
+            <div className="editor-wrapper">
+            <div className={"wrapper"}>
+              <div className="editing-area">
+                <div className="editor-header">
+                  <div className="title">
+                    <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className={"form-input"} placeholder="Title" />
+                  </div>
+                  <div className="postion-action">
+                    <button onClick={() => setEditorIsActive(!editorIsActive)} className="cta cta-w-icon reveal-text">
+                      {editorIsActive ? <ChevronUpIcon className="icon solid" /> : <ChevronDownIcon className="icon solid" />}
+                      <span className="text">{editorIsActive ? "Hide" : "Sticky"}</span>
+                    </button>
+                  </div>
                 </div>
-                <div className="postion-action">
-                  <button onClick={() => setEditorIsActive(!editorIsActive)} className="cta cta-w-icon reveal-text">
-                    {editorIsActive ? <ChevronUpIcon className="icon solid" /> : <ChevronDownIcon className="icon solid" />}
-                    <span className="text">{editorIsActive ? "Hide" : "Sticky"}</span>
-                  </button>
+                <div className="body">
+                  <textarea
+                    value={body}
+                    onChange={(e) => updateField(e)}
+                    name="note-body"
+                    id="note-body"
+                    className="form-textarea"
+                    cols="10"
+                    rows="2"
+                    placeholder="Write something spec ✨"
+                  ></textarea>
                 </div>
               </div>
-              <div className="body">
-                <textarea
-                  value={body}
-                  onChange={(e) => updateField(e)}
-                  name="note-body"
-                  id="note-body"
-                  className="form-textarea"
-                  cols="10"
-                  rows="2"
-                  placeholder="Write something spec ✨"
-                ></textarea>
-              </div>
-            </div>
-            <ul className={"options"}>
-              <li className="option">{/* <DropDown header={<DotsHorizontalIcon className="icon" />} /> */}</li>
-              <li className={"option"}>
-                <button onClick={saveNote} disabled={isSaved || isLoading} className="cta flex gap-2 items-end">
-                  <CheckCircleIcon className="icon" />
-                  <span className="">{isSaved ? "Saved" : noteAction == "add" ? "Save" : "Update"}</span>
-                </button>
-              </li>
-              {noteAction == "edit" && (
-                <>
-                  <li className={"option"}>
-                    <button onClick={cancelAction} disabled={isSaved || isLoading} className="cta flex gap-2 items-end">
-                      <XCircleIcon className="icon" />
-                      <span className="">{"Cancel"}</span>
-                    </button>
-                  </li>
-
-                  <li className={"option"}>
-                    <button disabled={isSaved || isLoading} onClick={togglePrivacy} className="cta flex gap-2 items-end">
-                      {isPublic ? (
-                        <>
-                          <EyeIcon className="icon" />
-                          <span className="">Public </span>
-                        </>
-                      ) : (
-                        <>
-                          <EyeOffIcon className="icon" />
-                          <span className="">Private</span>
-                        </>
-                      )}
-                    </button>
-                  </li>
-                </>
-              )}
-              {!isSaved && (
+              <ul className={"options"}>
+                <li className="option">{/* <DropDown header={<DotsHorizontalIcon className="icon" />} /> */}</li>
                 <li className={"option"}>
-                  <button disabled={isSaved || isLoading} onClick={clearEditor} className="cta flex gap-2 items-end">
-                    <MinusCircleIcon className="icon" />
+                  <button onClick={saveNote} disabled={isSaved || isLoading} className="cta flex gap-2 items-end">
+                    <CheckCircleIcon className="icon" />
+                    <span className="">{isSaved ? "Saved" : noteAction == "add" ? "Save" : "Update"}</span>
                   </button>
                 </li>
-              )}
-            </ul>
+                {noteAction == "edit" && (
+                  <>
+                    <li className={"option"}>
+                      <button onClick={cancelAction} disabled={isSaved || isLoading} className="cta flex gap-2 items-end">
+                        <XCircleIcon className="icon" />
+                        <span className="">{"Cancel"}</span>
+                      </button>
+                    </li>
+
+                    <li className={"option"}>
+                      <button disabled={isSaved || isLoading} onClick={togglePrivacy} className="cta flex gap-2 items-end">
+                        {isPublic ? (
+                          <>
+                            <EyeIcon className="icon" />
+                            <span className="">Public </span>
+                          </>
+                        ) : (
+                          <>
+                            <EyeOffIcon className="icon" />
+                            <span className="">Private</span>
+                          </>
+                        )}
+                      </button>
+                    </li>
+                  </>
+                )}
+                {!isSaved && (
+                  <li className={"option"}>
+                    <button disabled={isSaved || isLoading} onClick={clearEditor} className="cta flex gap-2 items-end">
+                      <MinusCircleIcon className="icon" />
+                    </button>
+                  </li>
+                )}
+              </ul>
+            </div>
           </div>
-        </div>
-      )}
+      </div>
+        )}
     </>
   );
 };
