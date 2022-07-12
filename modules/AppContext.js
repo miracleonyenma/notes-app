@@ -3,10 +3,12 @@ const { createContext, useState, useContext, useReducer } = require("react");
 // context data getter
 const NoteStateContext = createContext();
 const NotesStateContext = createContext();
+const ToastStateContext = createContext();
 
 // context data setter
 const NoteDispatchContext = createContext();
 const NotesDispatchContext = createContext();
+const ToastDispatchContext = createContext();
 
 // reducer function to modify state based on action types
 const notesReducer = (state, action) => {
@@ -65,14 +67,20 @@ export const NoteProvider = ({ children }) => {
   // and add, edit or remove a note from the array
   const [notes, setNotes] = useReducer(notesReducer, []);
 
+  const [toastState, setToastState] = useState({ isLoading: false, msg: `Loading... Please wait` });
+
   return (
-    <NoteDispatchContext.Provider value={setNote}>
-      <NoteStateContext.Provider value={note}>
-        <NotesDispatchContext.Provider value={setNotes}>
-          <NotesStateContext.Provider value={notes}>{children}</NotesStateContext.Provider>
-        </NotesDispatchContext.Provider>
-      </NoteStateContext.Provider>
-    </NoteDispatchContext.Provider>
+    <ToastDispatchContext.Provider value={setToastState}>
+      <ToastStateContext.Provider value={toastState}>
+        <NoteDispatchContext.Provider value={setNote}>
+          <NoteStateContext.Provider value={note}>
+            <NotesDispatchContext.Provider value={setNotes}>
+              <NotesStateContext.Provider value={notes}>{children}</NotesStateContext.Provider>
+            </NotesDispatchContext.Provider>
+          </NoteStateContext.Provider>
+        </NoteDispatchContext.Provider>
+      </ToastStateContext.Provider>
+    </ToastDispatchContext.Provider>
   );
 };
 
@@ -81,3 +89,6 @@ export const useDispatchNote = () => useContext(NoteDispatchContext);
 export const useNote = () => useContext(NoteStateContext);
 export const useDispatchNotes = () => useContext(NotesDispatchContext);
 export const useNotes = () => useContext(NotesStateContext);
+
+export const useDispatchToast = () => useContext(ToastDispatchContext)
+export const useToast = () => useContext(ToastStateContext)

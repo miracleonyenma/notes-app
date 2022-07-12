@@ -1,5 +1,6 @@
 .auth-btn {
   @apply flex gap-2 items-center p-2 border border-gray-200 rounded-lg;
+  @apply dark:border-slate-700;
 }
 
 .auth-info {

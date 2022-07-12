@@ -1,8 +1,9 @@
 .site-header {
-  @apply sticky top-6 w-full px-2 mb-6 z-10;
+  @apply sticky top-6 w-full px-2 mb-6 z-20;
 }
 
 .site-header .wrapper {
-  @apply flex items-center justify-between p-2 w-full bg-white bg-opacity-60 border-2 border-gray-200 border-opacity-40 m-auto max-w-5xl rounded-xl;
-  @apply backdrop-blur-lg
+  @apply flex items-center justify-between p-2 w-full bg-white  border-2 border-gray-200 border-opacity-40 m-auto max-w-5xl rounded-xl;
+  @apply dark:bg-slate-800 dark:border-slate-700;
+  @apply bg-opacity-60 backdrop-blur-lg;
 }

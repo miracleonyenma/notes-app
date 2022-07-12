@@ -5,8 +5,7 @@
 
 html,
 body {
-  padding: 0;
-  margin: 0;
+  @apply bg-slate-50 dark:bg-slate-900 dark:text-slate-50;
   font-family: 'Anek Gurmukhi', 'Syne', 'Work Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   line-height: 1;
@@ -39,15 +38,46 @@ li{
 }
 
 .cta {
-  @apply transition font-semibold p-2 bg-white border rounded-lg hover:scale-105 active:scale-95 active:shadow-inner disabled:grayscale disabled:pointer-events-none;
+  @apply transition font-semibold p-2 bg-white border rounded-lg hover:scale-105 active:scale-95 active:shadow-inner disabled:opacity-40 disabled:pointer-events-none;
+  @apply dark:bg-slate-800 dark:border-slate-600;
 }
 
 .cta.cta-w-icon {
   @apply flex gap-2 items-end;
 }
 
+.cta.reveal-text {
+  @apply transition gap-0;
+}
+
+.cta.reveal-text > .text{
+  @apply max-w-0 overflow-hidden;
+}
+
+.cta.reveal-text:hover, .cta.reveal-text:active, .cta.reveal-text:focus {
+  @apply gap-2;
+}
+
+.cta.reveal-text:hover > .text, .cta.reveal-text:active > .text, .cta.reveal-text:focus > .text{
+  @apply max-w-full;
+}
+
+.w-icon {
+  @apply flex gap-2 items-start md:items-end;
+}
+
+.w-icon .icon {
+  @apply shrink-0;
+}
+
+
 .icon {
   @apply h-5 w-5 text-blue-500;
+  @apply dark:text-slate-100;
+}
+
+.rotate {
+  @apply animate-spin;
 }
 
 .dropdown {
@@ -56,6 +86,7 @@ li{
 
 .dropdown-list {
   @apply absolute top-full mt-1 right-0 bg-white border border-gray-200 rounded-lg hover:visible hover:opacity-100 shadow-lg;
+  @apply dark:bg-slate-800 dark:border-slate-600;
 }
 
 .dropdown-btn:focus ~ .dropdown-list{
@@ -64,4 +95,14 @@ li{
 
 .note .note-footer .options{
   @apply flex items-center;
+}
+
+.toast {
+  @apply fixed left-1/2 transform -translate-x-1/2 min-w-[4rem] p-4 bg-white border border-blue-600 rounded-lg  z-20;
+  @apply dark:bg-slate-800 dark:border-slate-600;
+  @apply transition-all w-icon -bottom-48;
+}
+
+.toast.active {
+  @apply bottom-12;
 }

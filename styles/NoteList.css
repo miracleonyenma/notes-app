@@ -3,15 +3,20 @@
 }
 
 .note-list {
-  @apply grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 py-4 max-w-[98rem] m-auto;
+  @apply grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 py-4 max-w-5xl lg:max-w-7xl m-auto;
 }
 
-.note-list .note-item {
-  @apply border border-gray-200 rounded-xl;
-}
+/* .note-list .note-item {
+  @apply ;
+} */
 
 .note {
-  @apply flex flex-col gap-2 h-full p-4;
+  @apply flex flex-col gap-4 h-full p-4 border border-slate-200 rounded-xl;
+  @apply dark:border-slate-700;
+}
+
+.note.current {
+  @apply border-blue-600;
 }
 
 .note .note-header {
@@ -22,21 +27,31 @@
   @apply text-2xl
 }
 
+.note .note-main {
+  @apply grow;
+}
+
+.note .note-body,
+.note-body * {
+  @apply whitespace-pre-wrap md:!break-words;
+  overflow-wrap:anywhere;
+}
 
 .note .note-footer {
   @apply border-t border-gray-200 pt-4 mt-2;
+  @apply dark:border-slate-700
 }
 
+/* .note-footer .user-details {
+  @apply
+} */
+
 .note.preview {
-  /* @apply text-2xl; */
+  @apply border-transparent;
 }
 
 .note.preview .note-title {
   @apply  !text-4xl;
-}
-
-.note .note-main {
-  @apply grow;
 }
 
 .note.preview .note-body {
@@ -47,6 +62,20 @@
 .options {
   @apply flex gap-2 flex-wrap;
 }
+
+.options .time-info {
+  @apply flex flex-wrap gap-2;
+}
+
+
+.options .time-info .updated {
+  @apply transition max-w-0 overflow-hidden;
+}
+
+.options .time-info:hover .updated {
+  @apply max-w-6xl;
+}
+
 
 .fallback-message {
   @apply flex items-center justify-center w-full h-full min-h-[calc(100vh-20rem)];

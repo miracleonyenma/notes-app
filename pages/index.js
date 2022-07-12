@@ -11,6 +11,7 @@ import { getSession } from "next-auth/react";
 const getAllNotesByUserID = require("../prisma/Note").getAllNotesByUserID;
 
 import HomeStyles from "../styles/Home.module.css";
+import Toast from "../components/Toast";
 
 export const getServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -44,6 +45,7 @@ const Home = ({ notes }) => {
           </div>
         </main>
       </div>
+      <Toast />
     </>
   );
 };

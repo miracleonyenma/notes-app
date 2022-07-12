@@ -1,19 +1,27 @@
 .editor{
-  @apply my-16 min-h-[20] border border-gray-200 max-w-3xl m-auto rounded-xl shadow-lg;
+  @apply my-16 min-h-[20] bg-white border border-gray-200 max-w-3xl m-auto rounded-xl shadow-lg;
+  @apply dark:bg-slate-800 dark:border-slate-600;
+}
+
+.editor.active {
+  @apply sticky top-28 z-10;
 }
 
 .editor .wrapper{
   @apply p-4;
 }
 
+.editor .editor-header {
+  @apply flex items-center justify-between gap-4;
+}
+
 .editor .form-input, .editor .form-textarea{
-  @apply w-full border-transparent;
+  @apply w-full bg-transparent border-transparent;
 }
 
 .editor .form-input {
   @apply font-bold text-2xl ring-transparent;
   font-variation-settings: 'wdth' 130;
-
 }
 
 .editing-area {
