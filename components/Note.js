@@ -63,7 +63,7 @@ const Note = ({ note, isPreview }) => {
   return (
     <>
       <article className={`note ${isCurrentNote && "current"} ${isPreview ? "preview" : ""}`}>
-        <header className="note-header flex gap-4 justify-between">
+        <header className="note-header flex gap-4 pr-4 pt-4 justify-between">
           <h2 className="note-title">{note.title}</h2>
           <span className="" title="This note is public">
             {note.isPublic && <EyeIcon className="icon" />}
